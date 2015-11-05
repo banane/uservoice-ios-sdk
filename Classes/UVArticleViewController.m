@@ -29,6 +29,8 @@
 
     CGFloat footerHeight = 46;
     _webView = [UIWebView new];
+//    _webView.frame = self.view.bounds; // extra insurance that webview scales to device boundaries
+//    _webView.scalesPageToFit = true;
     _webView.delegate = self;
     NSString *section = _article.topicName ? [NSString stringWithFormat:@"%@ / %@", NSLocalizedStringFromTableInBundle(@"Knowledge Base", @"UserVoice", [UserVoice bundle], nil), _article.topicName] : NSLocalizedStringFromTableInBundle(@"Knowledge base", @"UserVoice", [UserVoice bundle], nil);
     NSString *linkColor;
@@ -37,7 +39,9 @@
     } else {
         linkColor = @"default";
     }
-    NSString *html = [NSString stringWithFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"http://cdn.uservoice.com/stylesheets/vendor/typeset.css\"/><style>a { color: %@; }</style></head><body class=\"typeset\" style=\"font-family: HelveticaNeue; margin: 1em; font-size: 15px\"><h5 style='font-weight: normal; color: #999; font-size: 13px'>%@</h5><h3 style='margin-top: 10px; margin-bottom: 20px; font-size: 18px; font-family: HelveticaNeue-Medium; font-weight: normal; line-height: 1.3'>%@</h3>%@</body></html>", linkColor, section, _article.question, _article.answerHTML];
+    
+    //<style type='text/css'>img { max-width: 100%; width: auto; height: auto; }</style>
+    NSString *html = [NSString stringWithFormat:@"<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"http://cdn.uservoice.com/stylesheets/vendor/typeset.css\"/><style>a { color: %@; }img { max-width: 100%; width: auto; height: auto; }</style></head><body class=\"typeset\" style=\"font-family: HelveticaNeue; margin: 1em; font-size: 15px\"><h5 style='font-weight: normal; color: #999; font-size: 13px'>%@</h5><h3 style='margin-top: 10px; margin-bottom: 20px; font-size: 18px; font-family: HelveticaNeue-Medium; font-weight: normal; line-height: 1.3'>%@</h3>%@</body></html>", linkColor, section, _article.question, _article.answerHTML];
     _webView.backgroundColor = [UIColor whiteColor];
     for (UIView* shadowView in [[_webView scrollView] subviews]) {
         if ([shadowView isKindOfClass:[UIImageView class]]) {
